@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import LandingHero from '~/components/LandingHero';
-import AuthModal from '~/components/AuthModal';
-import PromptStudio from '~/components/PromptStudio';
-import PricingPaywall from '~/components/PricingPaywall';
-import WorkspaceDashboard from '~/components/WorkspaceDashboard';
+import LandingHero from '../components/LandingHero';
+import AuthModal from '../components/AuthModal';
+import PromptStudio from '../components/PromptStudio';
+import PricingPaywall from '../components/PricingPaywall';
+import WorkspaceDashboard from '../components/WorkspaceDashboard';
 
 export default function Index() {
   const [currentStep, setCurrentStep] = useState('landing'); // 'landing' | 'auth' | 'prompt' | 'pricing' | 'dashboard'
