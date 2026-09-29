@@ -1,0 +1,135 @@
+import { useState } from 'react';
+
+export default function WorkspaceDashboard({ userEmail, promptText, selectedPlan, onBack }) {
+  const [activeTab, setActiveTab] = useState('preview'); // 'preview' | 'code'
+  const [chatLog, setChatLog] = useState([
+    { sender: 'Vortex E-3 Agent', text: `Project initialized for prompt: "${promptText}". WebContainer runtime & Node.js environment active.` }
+  ]);
+  const [inputMsg, setInputMsg] = useState('');
+
+  const handleSendMessage = () => {
+    if (!inputMsg.trim()) return;
+    const msg = inputMsg;
+    setChatLog(prev => [...prev, { sender: 'You', text: msg }]);
+    setInputMsg('');
+    setTimeout(() => {
+      setChatLog(prev => [...prev, { sender: 'Vortex E-3 Agent', text: 'Applying real-time modifications to virtual source code and refreshing live preview...' }]);
+    }, 1100);
+  };
+
+  return (
+    <div className="flex-1 flex flex-col md:flex-row overflow-hidden h-screen bg-[#020408] text-gray-100">
+      
+      {/* Left Side: Live Preview & Code Runtime */}
+      <div className="flex-1 flex flex-col bg-[#020408] border-r border-white/5 relative">
+        <div className="h-14 border-b border-white/5 flex items-center justify-between px-6 bg-[#0c1017]">
+          <div className="flex gap-2">
+            <button 
+              onClick={() => setActiveTab('preview')} 
+              className={`px-4 py-2 rounded-xl text-xs font-bold cursor-pointer transition flex items-center gap-2 ${activeTab === 'preview' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-gray-400 hover:text-white'}`}
+            >
+              <i className="fa-solid fa-globe"></i> Live Preview
+            </button>
+            <button 
+              onClick={() => setActiveTab('code')} 
+              className={`px-4 py-2 rounded-xl text-xs font-bold cursor-pointer transition ${activeTab === 'code' ? 'bg-orange-500 text-white shadow-lg shadow-orange-500/20' : 'text-gray-400 hover:text-white'}`}
+            >
+              <i className="fa-solid fa-code"></i> Code Files
+            </button>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-[11px] bg-orange-500/10 text-orange-400 px-3 py-1 rounded-full border border-orange-500/20 font-bold hidden sm:inline">
+              Plan: {selectedPlan || 'Pro'}
+            </span>
+            <button onClick={() => alert('App successfully published to Cloudflare production!')} className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 text-xs px-4 py-2 rounded-xl font-bold cursor-pointer hover:bg-emerald-500/20 transition flex items-center gap-2">
+              <i className="fa-solid fa-rocket"></i> Publish Live
+            </button>
+            <button onClick={onBack} className="text-xs text-gray-400 hover:text-white transition font-bold cursor-pointer">Exit</button>
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center p-6 bg-black/40 overflow-auto relative">
+          {activeTab === 'preview' ? (
+            <div className="w-full max-w-4xl h-[580px] bg-white text-gray-900 rounded-2xl shadow-2xl flex flex-col p-6 justify-between overflow-hidden">
+              <div>
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-black text-orange-600 text-xs uppercase tracking-wider">Virtual Runtime Environment</span>
+                  <span className="bg-emerald-100 text-emerald-800 text-[10px] px-3 py-1 rounded-full font-extrabold flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Running Live
+                  </span>
+                </div>
+                <div className="bg-gray-50 border border-gray-200 p-5 rounded-2xl mb-4">
+                  <h3 className="font-black text-base text-gray-900">AI Generated Application Output</h3>
+                  <p className="text-xs text-gray-500 mt-1">Prompt: "{promptText}"</p>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="p-4 bg-orange-50 border border-orange-100 rounded-2xl">
+                    <p className="text-[11px] text-gray-500 font-extrabold uppercase">Active Users</p>
+                    <p className="text-2xl font-black text-orange-600 mt-1">8,420</p>
+                  </div>
+                  <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl">
+                    <p className="text-[11px] text-gray-500 font-extrabold uppercase">Total Revenue</p>
+                    <p className="text-2xl font-black text-emerald-600 mt-1">₹5,24,000</p>
+                  </div>
+                </div>
+              </div>
+              <p className="text-[10px] text-center text-gray-400 font-medium">Powered by Vortex WebContainers & Cloudflare Engine</p>
+            </div>
+          ) : (
+            <div className="w-full max-w-4xl h-[580px] bg-[#0c1017] border border-white/10 text-gray-300 rounded-2xl p-5 font-mono text-xs overflow-auto shadow-2xl">
+              <p className="text-orange-400">// app.tsx - Compiled via WebContainers</p>
+              <p className="text-gray-500 mt-2">import React from 'react';</p>
+              <p className="text-gray-500">import &#123; Dashboard, Analytics, StripeBilling &#125; from '@vortex/engine';</p>
+              <p className="text-gray-300 mt-3">export default function MainApp() &#123;</p>
+              <p className="pl-4 text-gray-400">return (</p>
+              <p className="pl-8 text-emerald-400">&lt;div className="min-h-screen bg-slate-950 text-white p-8"&gt;</p>
+              <p className="pl-12 text-gray-300">&lt;h1 className="text-3xl font-black"&gt;{promptText || 'Generated SaaS'}&lt;/h1&gt;</p>
+              <p className="pl-12 text-gray-400">&lt;Analytics live=&#123;true&#125; /&gt;</p>
+              <p className="pl-8 text-emerald-400">&lt;/div&gt;</p>
+              <p className="pl-4 text-gray-400">);</p>
+              <p className="text-gray-500">&#125;</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Right Side: AI Assistant & Voice Console */}
+      <div className="w-full md:w-96 bg-[#0c1017] border-t md:border-t-0 md:border-l border-white/5 flex flex-col justify-between h-[48vh] md:h-full">
+        <div className="h-14 border-b border-white/5 flex items-center px-6 text-xs font-black text-white tracking-wider">
+          <span><i className="fa-solid fa-robot text-orange-500 mr-2"></i> E-3 AI AGENT CONSOLE</span>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          {chatLog.map((item, idx) => (
+            <div key={idx} className={`p-3.5 rounded-2xl text-xs max-w-[90%] leading-relaxed ${item.sender === 'You' ? 'ml-auto bg-orange-600 text-white font-medium' : 'bg-[#020408] border border-white/10 text-gray-200'}`}>
+              {item.sender !== 'You' && <p className="text-orange-400 font-bold mb-1">{item.sender}</p>}
+              <p>{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="p-4 bg-[#020408] border-t border-white/5 space-y-2">
+          <div className="flex items-center gap-1.5 text-[11px] text-gray-400 px-1 font-semibold">
+            <button onClick={() => alert('Voice assistant listening...')} className="hover:text-orange-400 cursor-pointer flex items-center gap-1"><i className="fa-solid fa-microphone text-orange-500"></i> Voice Prompt</button>
+            <span>•</span>
+            <span>Type chat modifications</span>
+          </div>
+          <div className="flex gap-2">
+            <input 
+              type="text" 
+              value={inputMsg}
+              onChange={(e) => setInputMsg(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+              placeholder="Ask AI to change layout, add database..." 
+              className="flex-1 bg-[#0c1017] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-orange-500"
+            />
+            <button onClick={handleSendMessage} className="bg-orange-500 text-white px-4 py-2.5 rounded-xl text-xs cursor-pointer hover:bg-orange-600 transition shadow-md">
+              <i className="fa-solid fa-paper-plane"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  );
+}
