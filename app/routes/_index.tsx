@@ -6,7 +6,7 @@ import PricingPaywall from '~/components/PricingPaywall';
 import WorkspaceDashboard from '~/components/WorkspaceDashboard';
 
 export default function Index() {
-  const [currentStep, setCurrentStep] = useState('landing'); // 'landing' | 'auth' | 'prompt' | 'pricing' | 'dashboard'
+  const [currentStep, setCurrentStep] = useState('landing');
   const [emailData, setEmailData] = useState('');
   const [promptData, setPromptData] = useState('');
   const [selectedPlanData, setSelectedPlanData] = useState('Pro');
